@@ -9,7 +9,7 @@ services:
       - KEYCLOAK_ADMIN=hemanshu
       - KEYCLOAK_ADMIN_PASSWORD=hemanshu
       - KC_DB=postgres
-      - KC_DB_URL=jdbc:postgresql://192.168.0.120:5432/digital_lending_keycloak
+      - KC_DB_URL=jdbc:postgresql://192.168.56.1:5432/digital_lending_keycloak
       - KC_DB_USERNAME=postgres
       - KC_DB_PASSWORD=hemanshu
     command: ["start-dev"]
@@ -33,12 +33,36 @@ services:
     ports:
       - 8083:8083
     environment:
-      - DB_URL=jdbc:postgresql://192.168.0.120:5432/digital_lending_keycloak
+      - DB_URL=jdbc:postgresql://192.168.56.1:5432/digital_lending_keycloak
       - USER_DB_URL=jdbc:postgresql://userdb:5432/digital_lending_user
       - DB_USER=postgres
       - DB_PASSWORD=hemanshu
       - server-url=http://keycloak:8080
       - eureka=http://registry:8081/eureka
+      - TWILIO_ACCOUNT_SID=AC11aff22688cf06051ab73106daf384ef
+      - TWILIO_AUTH_TOKEN=54391a4c291fe268deb611bd4f1dc9f7
+      - TWILIO_VERIFY_SID=VA2a7d5e0703fb6a8ecf27eeec3940ebe5
+      - RAPID_API_TASK_ID=74f4c926-250c-43ca-9c53-453e87ceacd1
+      - RAPID_API_GROUP_ID=8e16424a-58fc-4ba4-ab20-5bc8e7c3c41e
+      - RAPID_API_KEY=c171d280efmsh4db96ec7bfb1e03p13ed29jsn9e218b50add3
+      - AADHAAR_CLIENT_ID=SBX_003386
+      - AADHAAR_CLIENT_SECRET=2ec7e9a2-f280-45e6-b12d-b7536a17a4df
+      - email-id=digital.lending.pf@gmail.com
+      - email-password=jwws mdkn xosn gjbc
+      - realm=myRealm
+      - client-id=admin-cli
+      - grant-type=password
+      - name=admin
+      - password=admin
+      - login-client-id=springboot
+      - login-client-secret=6i94LmuHoqnw8I5kNSYvPD9Je6VIhNYU
+      - default-role=default-roles-myrealm
+      - rsa_public_key=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqAVx6xjXCttAUM1vcxw/Oef2g2cXIygZEl4Y5yz1+YrlryCMKeoVe7FNf5ZtBwc27fuJNu1mQCtDB3FQHhmSOFIe67YiE8xVOT6U4gcrwvglM1JS9uN01VI013DOLJcBvJkeIKZc6CvrsfVjs88AnS406JiN0KGEGEItB/rjaXS9GVxjs+/Vx5l0IEiP8/+u6S2973v99u7Bc+V9jFMdVPC4/qO6ku9WU0N6ZQHWvoJvuMDIJtAnXygWBC3erRm8q7/7G72dnAbgba9KlYCnQ+Dy5mGnubYWI/bobv1dKCEbS8spMYCbmg+BpfEnZXyU81KQKOvIbp6oK2KSO+IX/QIDAQAB
+      - rsa_private_key=MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCoBXHrGNcK20BQzW9zHD855/aDZxcjKBkSXhjnLPX5iuWvIIwp6hV7sU1/lm0HBzbt+4k27WZAK0MHcVAeGZI4Uh7rtiITzFU5PpTiByvC+CUzUlL243TVUjTXcM4slwG8mR4gplzoK+ux9WOzzwCdLjTomI3QoYQYQi0H+uNpdL0ZXGOz79XHmXQgSI/z/67pLb3ve/327sFz5X2MUx1U8Lj+o7qS71ZTQ3plAda+gm+4wMgm0CdfKBYELd6tGbyrv/sbvZ2cBuBtr0qVgKdD4PLmYae5thYj9uhu/V0oIRtLyykxgJuaD4Gl8SdlfJTzUpAo68hunqgrYpI74hf9AgMBAAECggEAAmQIPlCl2gIceqanz12lWDKriyxXw9JQl0d/t4OSz/VMguzMLxopbpf8aCm7iOpiDEGJpl6MKKHAsFw9FOr2IPuHFmfTQc5tY4uVES2sHATYHofPbhl2nBGTkDTgdAJFlpq5WUUVQ6TJiy7Hd4SHRKh7+RN9sLC6UkvX9X0o0w3oY2/Ce9OSECtyw0lry9pjft93DRuAfXYlIXN1JBkN28VgkYwsQ9W1aCKRXEwVhZPYg2NYZHqo3j9343JmB9yedkpLPZ+3TOMkgIWGMfHEwo8KqrXPnielzZO7mMBOqvpX41VNr50iOszhI2d53Og67NFKbmPyds5eJdfw85oW0QKBgQDbPbD+pqaS96EWJOmiRmGNvLCmK4Qj0G7ECuHYRpFg6Y459NvjyQLECr284nGe7sSOMs/Q1bYTgAcZUuy2/6fHaEayHHr5MV/XAP1EQotZfyHVYxp8B5x5CNT+/GL/8Jqw0D7i9MnL791ue3Q6Cx9/NlmDEq+ypDRLl360LC+ezQKBgQDEMUpDC+hlucDZWndoNMoLgYUnF3Nd2ud4UjV865XjTcIX9xjOl5Cjuy0OTtpx0flrRDZ9k37QzrKXGGgX72jDmEAURP9JBX3bNXZ2M7V2KX9CExcFMr9wXFFl+0nRS4tIzy4WoS9oWyADod3BxHhDZtApK+Q/0wSHnHHRJZH98QKBgGJJzQDNK551v9USpV9n2DJX5oYIukvoFNB05H02XdSpwGaBPNdo9YF4I0n75t5OwvXRF9PTC7bATe5ve8oq4UgHmrIdDJCNLx9PxTuF7b0ovr1Qmb4DF4Y3jG3oLmX5sxATvC25eoKgPZBbbmbbN7qrXgPiK7yV2xAMkfQqXwr9AoGAMDG3f17WeN63i+0YNgX5t/faIK83DNAwWjM/pm8sw8ifLEnr0xwSUNYzDDe8m4csEPiRtilcVqjf4BQDxhVuk9W7r/7/Aw4RS58HeaPcKKmq9C1CU2mS82QKLtYa3QoErh8OwEpaHfV8mMfTdLzxmgUQj3yTtkX8798zamAjS9ECgYBpCqJSK29m3JOboIVFWosgrx1Uuk1aOAJ5nTAhY0foplgFdJ050vTFBYuJn/dSsu9PAnrO9RJYktcigsIOJN3qM7cWKfhFynnSPvxD4XayJu5Tg7Ky/K8OlD7Xf3BjVBtRUKwXhVPNXh5JPqyX0K1j8p4AnvWQguXaheNQnD0EVA==
+      - cipher_instance_type=RSA/ECB/PKCS1Padding
+      - encryption_algo=RSA
+      - admin-email=systemadmin@gmail.com
+      - admin-password=Admin@123
 
   registry:
     image: hemanshu16/serviceregistry
