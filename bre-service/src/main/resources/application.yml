@@ -2,10 +2,10 @@ server:
   port: 8085
 
 spring:
+  profiles:
+    active: dev
   application:
     name: BRE-SERVICE
-  config:
-    import: env.properties
   jpa:
     database: postgresql
     show-sql: true

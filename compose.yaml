@@ -29,7 +29,7 @@ services:
       userdb:
         condition: service_healthy
 #    restart: always
-    image: user
+    image: hemanshu16/userservice
     ports:
       - 8083:8083
     environment:
@@ -41,7 +41,7 @@ services:
       - eureka=http://registry:8081/eureka
 
   registry:
-    image: serviceregistry:0.1
+    image: hemanshu16/serviceregistry
     ports:
       - 8081:8081
     healthcheck:
@@ -51,7 +51,7 @@ services:
       timeout: 5s
 
   gateway:
-    image: gateway
+    image: hemanshu16/apigatewayservice
     ports:
       - 8082:8082
     depends_on:

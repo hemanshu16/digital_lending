@@ -3,11 +3,12 @@ server:
 logging:
   level:
     root: debug
+
 spring:
+  profiles:
+    active: dev
   application:
     name: LOAN-SERVICE
-  config:
-    import: env.properties
   jpa:
     database: postgresql
     show-sql: true
