@@ -1,0 +1,30 @@
+server:
+  port: 8084
+logging:
+  level:
+    root: debug
+spring:
+  application:
+    name: LOAN-SERVICE
+  config:
+    import: env.properties
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+loan-service:
+  userServiceBaseUrl: ${USER_SERVICE_BASE_URL}
+  breServiceBaseUrl : ${BRE_SERVICE_BASE_URL}
+eureka:
+  instance:
+    prefer-ip-address: false
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${eureka}
