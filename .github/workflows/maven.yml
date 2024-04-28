@@ -59,7 +59,7 @@ jobs:
       env:
         REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
         REGISTRY_ALIAS: o6a4j2s0
-        REPOSITORY: deigitallending
+        REPOSITORY: digitallending
         IMAGE_TAG:  ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
       run: |
         docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG service-registry/
