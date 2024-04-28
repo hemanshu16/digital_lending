@@ -30,7 +30,7 @@ jobs:
       run: mvn -B package --file service-registry/pom.xml
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -38,28 +38,20 @@ jobs:
 
     - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
 
-    - name: Get commit hash
-      id: get-commit-hash
-      run: echo "::set-output name=commit-hash::$(git rev-parse --short HEAD)"
-    
-    - name: Get timestamp
-      id: get-timestamp
-      run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
-
-    - name: Build, tag, and push the image to Amazon ECR
+    - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
-        IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
+        IMAGE_TAG: latest
       run: |
-        echo $ECR_REGISTRY
-        echo $ECR_REPOSITORY
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG service-registry/
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
         
   # api-gateway-service:
   #   runs-on: ubuntu-latest
