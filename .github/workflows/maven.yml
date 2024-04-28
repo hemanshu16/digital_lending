@@ -14,6 +14,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+    id-token: write   # This is required for requesting the JWT
+    contents: read    # This is required for actions/checkout
+
 jobs:
   service-registry:
     runs-on: ubuntu-latest
@@ -30,15 +34,11 @@ jobs:
       run: mvn -B package --file service-registry/pom.xml
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
+      uses: aws-actions/configure-aws-credentials@v4 # More information on this action can be found below in the 'AWS Credentials' section
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{secrets.AWS_REGION}}
+        role-to-assume: arn:aws:iam::544357677864:role/github-action
+        aws-region: eu-north-1
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
 
     - name: Get commit hash
       id: get-commit-hash
@@ -46,21 +46,24 @@ jobs:
 
     - name: Get timestamp
       id: get-timestamp
-      env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
 
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
+
+    - name: Login to Amazon ECR Public
+      id: login-ecr-public
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registry-type: public
+
+    - name: Build, tag, and push docker image to Amazon ECR Public
       env:
+        REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
+        REGISTRY_ALIAS: my-ecr-public-registry-alias
+        REPOSITORY: deigitallending
         IMAGE_TAG:  ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
       run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        docker build -t public.ecr.aws/o6a4j2s0/digitallending:latest service-registry/
-        docker push public.ecr.aws/o6a4j2s0/digitallending:latest
-        echo "image=$AWS_REGISTRY/serviceregistry:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
+        docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
         
   # api-gateway-service:
   #   runs-on: ubuntu-latest
